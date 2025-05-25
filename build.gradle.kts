@@ -102,13 +102,6 @@ dependencies {
 	modRuntimeOnly(libs.resource.explorer)
 }
 
-configurations {
-	runtimeClasspath {
-		// remove duplicate fabric-loader
-		exclude(group = "net.fabricmc", module = "fabric-loader")
-	}
-}
-
 tasks.processResources {
 	inputs.property("version", version)
 	
