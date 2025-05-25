@@ -3,37 +3,36 @@
 # https://fabricmc.net/develop/ for fabric
 
 # Base
-minecraft = "1.21"
-parchment = "2024.07.07"
-fabric_loader = "0.16.0"
+minecraft = "1.21.5"
+parchment = "2025.04.19"
+fabric_loader = "0.16.14"
 
 # Libraries
-fabric_api = "0.100.7+1.21"
-fabric_permissions = "0.3.1"
+fabric_api = "0.124.2+1.21.5"
 
 # Mod Integrations
-wthit = "fabric-12.2.2"
-modmenu = "11.0.1"
-luckperms = "5.4"
+wthit = "fabric-15.0.1"
+modmenu = "14.0.0-rc.2"
+playerroles = "1.6.14"
 
 # Runtime Mods
-resource_explorer = "RuU8ZS7y"
+resource_explorer = "dV5Uopqw"
 
 [libraries]
 # Base
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
-parchment = { module = "org.parchmentmc.data:parchment-1.21", version.ref = "parchment" }
+parchment = { module = "org.parchmentmc.data:parchment-1.21.5", version.ref = "parchment" }
 fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
 
 # Libraries
 fabric_api = { module = "net.fabricmc.fabric-api:fabric-api", version.ref = "fabric_api" }
-lucko_fabric_permissions = { module = "me.lucko:fabric-permissions-api", version.ref = "fabric_permissions" }
 
 # Mod Integrations
 wthit = { module = "mcp.mobius.waila:wthit", version.ref = "wthit" }
 wthit_api = { module = "mcp.mobius.waila:wthit-api", version.ref = "wthit" }
 modmenu = { module = "com.terraformersmc:modmenu", version.ref = "modmenu" }
-luckperms = { module = "net.luckperms:api", version.ref = "luckperms" }
+playerroles = { module = "dev.gegy:player-roles", version.ref = "playerroles" }
+playerroles_api = { module = "dev.gegy:player-roles-api", version.ref = "playerroles" }
 
 # Runtime Mods
 resource_explorer = { module = "maven.modrinth:resource_explorer", version.ref = "resource_explorer" }
@@ -42,4 +41,4 @@ resource_explorer = { module = "maven.modrinth:resource_explorer", version.ref =
 [bundles]
 
 [plugins]
-quilt_loom = { id = "org.quiltmc.loom", version = "1.+" }
+fabric_loom = { id = "fabric-loom", version = "1.10-SNAPSHOT" }

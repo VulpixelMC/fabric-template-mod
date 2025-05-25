@@ -4,7 +4,7 @@ import nl.javadude.gradle.plugins.license.License
 
 plugins {
 	id("com.github.hierynomus.license").version("0.16.1")
-	alias(libs.plugins.quilt.loom)
+	alias(libs.plugins.fabric.loom)
 	`maven-publish`
 }
 
@@ -53,6 +53,22 @@ repositories {
 			includeGroup("maven.modrinth")
 		}
 	}
+	
+	maven {
+		name = "Gegy Maven"
+		url = uri("https://maven.gegy.dev/releases")
+		content {
+			includeGroup("dev.gegy")
+		}
+	}
+	
+	maven {
+		name = "Nucleoid Maven"
+		url = uri("https://maven.nucleoid.xyz/")
+		content {
+			includeGroup("xyz.nucleoid")
+		}
+	}
 }
 
 val modImplementationInclude by configurations.register("modImplementationInclude")
@@ -75,21 +91,14 @@ dependencies {
 	// Mod Integrations
 	modCompileOnly(libs.wthit)
 	modCompileOnly(libs.wthit.api)
-	modCompileOnly(libs.lucko.fabric.permissions) {
-		exclude(group = "net.fabricmc.fabric-api")
-		exclude(group = "net.fabricmc")
-	}
+	modCompileOnly(libs.playerroles.api)
 	
 	modRuntimeOnly(libs.wthit)
 	modRuntimeOnly(libs.modmenu) {
 		exclude(group = "net.fabricmc.fabric-api")
 		exclude(group = "net.fabricmc")
 	}
-	modRuntimeOnly(libs.luckperms)
-	modRuntimeOnly(libs.lucko.fabric.permissions) {
-		exclude(group = "net.fabricmc.fabric-api")
-		exclude(group = "net.fabricmc")
-	}
+	modRuntimeOnly(libs.playerroles)
 	modRuntimeOnly(libs.resource.explorer)
 }
 
@@ -121,10 +130,43 @@ tasks.withType<JavaCompile> {
 
 loom {
 	accessWidenerPath.set(file("src/main/resources/$modId.accesswidener"))
-}
-
-fabricApi {
-	configureDataGeneration()
+	
+	splitEnvironmentSourceSets()
+	
+	mods {
+		register(modId) {
+			sourceSet(sourceSets["main"])
+			sourceSet(sourceSets["test"])
+			sourceSet(sourceSets["client"])
+		}
+	}
+	
+	runs {
+		named("client") {
+			client()
+			configName = "Fabric Client"
+			setSource(sourceSets["test"])
+			ideConfigGenerated(true)
+			vmArgs("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true")
+		}
+		named("server") {
+			server()
+			configName = "Fabric Server"
+			setSource(sourceSets["test"])
+			ideConfigGenerated(true)
+			vmArgs("-Dmixin.debug.verbose=true", "-Dmixin.debug.export=true")
+		}
+		register("datagen") {
+			server()
+			configName = "Fabric Datagen"
+			setSource(sourceSets["test"])
+			ideConfigGenerated(true)
+			vmArg("-Dfabric-api.datagen")
+			vmArg("-Dfabric-api.datagen.output-dir=${file("../common/src/generated/resources")}")
+			vmArg("-Dfabric-api.datagen.modid=${modId}")
+			runDir("build/datagen")
+		}
+	}
 }
 
 java {
