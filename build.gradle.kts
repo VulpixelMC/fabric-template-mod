@@ -185,6 +185,10 @@ java {
 
 // If you plan to use a different file for the license, don't forget to change the file name here!
 tasks.withType<AbstractArchiveTask> {
+	from("LICENSE") {
+		rename { "${it}_${modId}" }
+	}
+	
 	from("COPYING") {
 		rename { "${it}_${modId}" }
 	}
